@@ -16,10 +16,8 @@ func (app *application) showMovieHandler(w http.ResponseWriter, r *http.Request)
 
 	id, err := app.readIdParam(r)
 
-	if err != nil || id < 1 {
-		http.NotFound(w, r)
-
-		return
+	if err != nil {
+		app.notFoundResponse(w, r)
 	}
 
 	movie := data.Movie{
@@ -35,9 +33,7 @@ func (app *application) showMovieHandler(w http.ResponseWriter, r *http.Request)
 
 	if err != nil {
 
-		app.logger.Println(err)
-		http.Error(w, "The server encountered a problem and encountered a problem and could not process your request", http.StatusInternalServerError)
-
+		app.serverErrorResponse(w, r, err)
 	}
 
 }
